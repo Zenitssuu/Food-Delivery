@@ -13,13 +13,9 @@ function Layout({ children }) {
       <Header />
       <Hero />
       <div className="container mx-auto flex-1 py-10">{children}</div>
-      <Footer />    
+      <Footer />
     </div>
   );
 }
-
-Layout.propTypes = {
-  children: React.ReactNode,
-};
 
 export default Layout;

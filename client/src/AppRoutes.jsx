@@ -8,7 +8,8 @@ import {
 // import About from './pages/About';
 // import NotFound from './pages/NotFound';
 import Layout from "./layout/layout.jsx";
-import Home  from "./pages/Home.jsx";
+import Home from "./pages/Home.jsx";
+import AuthCallbackPage from "./pages/AuthCallbackPage.jsx";
 
 function AppRouter() {
   return (
@@ -21,7 +22,9 @@ function AppRouter() {
           </Layout>
         }
       />
+      <Route path="/auth-callback" element={<AuthCallbackPage/>}/>
       <Route path="/about" element={<span>Hellow jolu</span>} />
+      <Route path="/user-profile" element={<span>User Profile</span>}/>
       <Route path="*" element={<Navigate to={"/"} />} />
     </Routes>
   );
