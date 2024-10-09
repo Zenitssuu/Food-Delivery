@@ -22,7 +22,7 @@ export const useCreateUser = () => {
       },
     });
 
-    if (resp.status !== 200 || resp.status !== 200) {
+    if (resp.status !== 200 && resp.status !== 201) {
       throw new Error("Failed to fetch user");
     }
     // console.log(resp);
