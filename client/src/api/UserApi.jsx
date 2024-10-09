@@ -1,6 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { data } from "autoprefixer";
 import axios from "axios";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
+import { toast } from "sonner";
 
 const CreateUserRequest = {
   auth0Id: String,
@@ -40,4 +42,82 @@ export const useCreateUser = () => {
     isError,
     isSuccess,
   };
+};
+
+export const useUpdateUser = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateUserReq = async (formData) => {
+    // console.log(formData);
+    const accesToken = await getAccessTokenSilently();
+    const resp = await axios.post("/user/update-user", formData, {
+      headers: {
+        Authorization: `Bearer ${accesToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    // console.log(resp);
+
+    if (resp.statusText !== "OK") {
+      throw new Error("Failed to update user");
+    }
+
+    return resp;
+  };
+
+  const {
+    mutateAsync: updateUser,
+    isLoading,
+    isError,
+    error,
+    isSuccess,
+    reset,
+  } = useMutation(updateUserReq);
+
+  if (isSuccess) {
+    toast.success("User profile updated!");
+  }
+
+  if (error) {
+    toast.error(error.toString());
+    reset();
+  }
+
+  return { updateUser, isLoading };
+};
+
+export const useGetUser = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getUserReq = async () => {
+    const accesToken = await getAccessTokenSilently();
+    const resp = await axios.get("/user/get-user", {
+      headers: {
+        Authorization: `Bearer ${accesToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(resp);    
+
+    if (resp.statusText !== "OK") {
+      throw new Error("Failed to get user");
+    }
+
+    return {...resp.data};
+  };
+
+  const {
+    data: getUser,
+    isLoading,
+    error,
+  } = useQuery("fetchCurrentUser", getUserReq);
+
+  if(error){
+    toast.error(error.toString());
+  }
+
+  // console.log(data);
+  
+
+  return {getUser,isLoading}
 };

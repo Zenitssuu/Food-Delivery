@@ -6,8 +6,9 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Auth0ProviderWithNavigate from "./auth/Auth0ProviderWithNavigate.jsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 import axios from "axios";
+import { Toaster } from "sonner";
 
-axios.defaults.baseURL=`${import.meta.env.VITE_BASE_URL}`
+axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <Auth0ProviderWithNavigate>
           <AppRouter />
+          <Toaster visibleToasts={1} position="top-right" richColors />
         </Auth0ProviderWithNavigate>
       </QueryClientProvider>
     </Router>

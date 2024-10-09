@@ -18,8 +18,10 @@ app.use(
     credentials: true,
   })
 );
+console.log(process.env.AUTH0_AUDIENCE);
+console.log(process.env.AUTH0_ISSUER_BASE_URL);
 
-app.use('/api/v1/user',userRoutes);
+app.use("/api/v1/user", userRoutes);
 
 connectDB()
   .then(() => {
