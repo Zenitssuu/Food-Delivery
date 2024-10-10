@@ -58,7 +58,7 @@ export const useUpdateUser = () => {
     });
     // console.log(resp);
 
-    if (resp.statusText !== "OK") {
+    if (resp.status!==200 && resp.status !== 201) {
       throw new Error("Failed to update user");
     }
 
@@ -99,7 +99,7 @@ export const useGetUser = () => {
     });
     console.log(resp);    
 
-    if (resp.statusText !== "OK") {
+    if (resp.status!==200 && resp.status !== 201) {
       throw new Error("Failed to get user");
     }
 
