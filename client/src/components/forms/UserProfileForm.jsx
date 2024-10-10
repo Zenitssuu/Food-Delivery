@@ -53,7 +53,7 @@ function UserProfileForm({ onSave, isLoading, getUser }) {
     form.reset(getUser);
   }, [getUser, form]);
 
-  console.log(form);
+  // console.log(form);
 
   return (
     <Form {...form}>
@@ -83,7 +83,7 @@ function UserProfileForm({ onSave, isLoading, getUser }) {
                   disabled
                   className="bg-white"
                 />
-              </FormControl> 
+              </FormControl>
             </FormItem>
           )}
         />

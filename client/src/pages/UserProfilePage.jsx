@@ -19,7 +19,7 @@ function UserProfilePage() {
   return (
         <UserProfileForm
         getUser={getUser.user}
-        onsave={updateUser} 
+        onSave={updateUser} 
         Loading={isUpdateLoading} 
         />
     );  

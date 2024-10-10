@@ -97,7 +97,7 @@ export const useGetUser = () => {
         "Content-Type": "application/json",
       },
     });
-    console.log(resp);    
+    // console.log(resp);    
 
     if (resp.status!==200 && resp.status !== 201) {
       throw new Error("Failed to get user");
