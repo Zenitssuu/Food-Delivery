@@ -66,3 +66,41 @@ export const useGetRestaurant = () => {
 
   return { restaurant, isLoading };
 };
+
+export const useUpdateResturant = () =>{
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateRestaurantReq = async (formData) => {
+    const accessToken = await getAccessTokenSilently();
+
+    const resp = await axios.put("/restaurant/update-restaurant", formData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (resp.status !== 200 && resp.status !== 201) {
+      throw new Error("Failed to update restaurant");
+    }
+
+    return resp.data;
+  };
+
+  const {
+    mutate: updateRestaurant,
+    isLoading,
+    isSuccess,
+    error,
+  } = useMutation(updateRestaurantReq);
+
+  if (isSuccess) {
+    toast.success("Restaurant sucessfully updated");
+  }
+
+  if (error) {
+    toast.error("Unable to update resturant");
+  }
+
+  return { updateRestaurant, isLoading };
+
+}

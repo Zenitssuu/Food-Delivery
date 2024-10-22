@@ -26,14 +26,13 @@ function AppRouter() {
         }
       />
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
-      <Route path="/about" element={<span>Hellow jolu</span>} />
 
       <Route element={<ProtectedRoute />}>
         <Route
           path="/user-profile"
           element={
             <Layout>
-              <UserProfilePage />{" "}
+              <UserProfilePage />
             </Layout>
           }
         />
@@ -42,7 +41,7 @@ function AppRouter() {
           path="/manage-restaurant"
           element={
             <Layout>
-              <ManageResturantPage />{" "}
+              <ManageResturantPage />
             </Layout>
           }
         />

@@ -11,35 +11,41 @@ import ImageSection from "./ImageSection.jsx";
 import LoadingButton from "@/components/custom/LoadingButton.jsx";
 import { Button } from "@/components/ui/button.jsx";
 
-const formSchema = z.object({
-  restaurantName: z.string({
-    required_error: "resturant is required",
-  }),
-  city: z.string({
-    required_error: "city is required",
-  }),
-  country: z.string({
-    required_error: "country is required",
-  }),
-  deliveryPrice: z.coerce.number({
-    required_error: "delivery price is required",
-    invalid_type_error: "must be a number",
-  }),
-  cuisines: z.array(z.string()).nonempty({
-    message: "please select at least one item",
-  }),
-  estimatedDeliveryTime: z.coerce.number({
-    required_error: "delivery time must be required",
-    invalid_type_error: "must be a number",
-  }),
-  menuItems: z.array(
-    z.object({
-      name: z.string().min(1, "name is required"),
-      price: z.coerce.number().min(1, "price is required"),
-    })
-  ),
-  imageFile: z.instanceof(File, { message: "image is required" }),
-});
+const formSchema = z
+  .object({
+    restaurantName: z.string({
+      required_error: "resturant is required",
+    }),
+    city: z.string({
+      required_error: "city is required",
+    }),
+    country: z.string({
+      required_error: "country is required",
+    }),
+    deliveryPrice: z.coerce.number({
+      required_error: "delivery price is required",
+      invalid_type_error: "must be a number",
+    }),
+    cuisines: z.array(z.string()).nonempty({
+      message: "please select at least one item",
+    }),
+    estimatedDeliveryTime: z.coerce.number({
+      required_error: "delivery time must be required",
+      invalid_type_error: "must be a number",
+    }),
+    menuItems: z.array(
+      z.object({
+        name: z.string().min(1, "name is required"),
+        price: z.coerce.number().min(1, "price is required"),
+      })
+    ),
+    imageUrl: z.string().optional(),
+    imageFile: z.instanceof(File, { message: "image is required" }).optional(),
+  })
+  .refine((data) => data.imageUrl || data.imageFile, {
+    message: "Either image URL or image file must be provided",
+    path: ["imageFile"],
+  });
 
 function ManageResturantForm({ onSave, isLoading, restaurant }) {
   const form = useForm({
@@ -72,7 +78,7 @@ function ManageResturantForm({ onSave, isLoading, restaurant }) {
   }, [form, restaurant]);
 
   const onSubmit = (restaurantData) => {
-    // console.log(restaurantData.restaurantName);
+    // console.log(restaurantData.imageFile);
 
     const formData = new FormData();
 
@@ -94,7 +100,9 @@ function ManageResturantForm({ onSave, isLoading, restaurant }) {
       formData.append(`menuItems[${index}][price]`, menuItem.price.toString());
     });
 
-    formData.append("imageFile", restaurantData.imageFile);
+    if (restaurantData.imageFile) {
+      formData.append('imageFile', restaurantData.imageFile);
+    }
 
     onSave(formData);
   };
