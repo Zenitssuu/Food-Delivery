@@ -12,6 +12,7 @@ import Home from "./pages/Home.jsx";
 import AuthCallbackPage from "./pages/AuthCallbackPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
+import ManageResturantPage from "./pages/ManageResturantPage.jsx";
 
 function AppRouter() {
   return (
@@ -33,6 +34,15 @@ function AppRouter() {
           element={
             <Layout>
               <UserProfilePage />{" "}
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/manage-restaurant"
+          element={
+            <Layout>
+              <ManageResturantPage />{" "}
             </Layout>
           }
         />
