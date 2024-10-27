@@ -13,6 +13,7 @@ import AuthCallbackPage from "./pages/AuthCallbackPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import ManageResturantPage from "./pages/ManageResturantPage.jsx";
+import SearchPage from "./pages/SearchPage.jsx";
 
 function AppRouter() {
   return (
@@ -26,6 +27,14 @@ function AppRouter() {
         }
       />
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
+      <Route
+        path="/allrestaurants/search/:city"
+        element={
+          <Layout showHero={false}>
+            <SearchPage />
+          </Layout>
+        }
+      />
 
       <Route element={<ProtectedRoute />}>
         <Route

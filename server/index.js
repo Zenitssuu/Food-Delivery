@@ -5,6 +5,8 @@ import { v2 as cloudinary } from "cloudinary";
 import { connectDB } from "./db/index.js";
 import { userRoutes, resturantRoutes } from "./routes/routes.js";
 
+import allRestaurantsRoutes from "./routes/allRestaurants.routes.js";
+
 dotenv.config();
 
 cloudinary.config({
@@ -31,6 +33,7 @@ console.log(process.env.AUTH0_ISSUER_BASE_URL);
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/restaurant", resturantRoutes);
+app.use("/api/v1/allrestaurants", allRestaurantsRoutes);
 
 connectDB()
   .then(() => {
