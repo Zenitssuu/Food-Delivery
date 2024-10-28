@@ -6,9 +6,11 @@ export const useSearchRestaurant = (searchState, city) => {
     const params = new URLSearchParams();
     params.set("searchQuery", searchState?.searchQuery || "");
     params.set("page", searchState?.page || "1");
-    params.set("selectedCuisines",searchState?.selectedCuisines.join(",") || []);
-    params.set("sortOption",searchState?.sortOption || "bestMatch");
-
+    params.set(
+      "selectedCuisines",
+      searchState?.selectedCuisines.join(",") || []
+    );
+    params.set("sortOption", searchState?.sortOption || "bestMatch");
 
     const resp = await axios.get(
       `/allrestaurants/search/${city}?${params.toString()}`
@@ -22,10 +24,32 @@ export const useSearchRestaurant = (searchState, city) => {
   };
 
   const { data: results, isLoading } = useQuery(
-    ["searchRestaurants",searchState],
+    ["searchRestaurants", searchState],
     createSearchRequest,
     { enabled: !!city }
   );
 
   return { results, isLoading };
+};
+
+export const useGetRestaurantById = (restaurantId) => {
+  const getRestaurantbyIdReq = async () => {
+    const resp = await axios.get(`/allrestaurants/${restaurantId}`);
+
+    if (resp.status !== 200 && resp.status !== 201) {
+      throw new Error("failed to get restaurant");
+    }
+
+    return resp.data;
+  };
+
+  const { data: restaurant, isLoading } = useQuery(
+    "fetchRestaurant",
+    getRestaurantbyIdReq,
+    {
+      enabled: !!restaurantId,
+    }
+  );
+
+  return { restaurant, isLoading };
 };

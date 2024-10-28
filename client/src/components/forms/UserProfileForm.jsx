@@ -25,25 +25,13 @@ const FormSchema = z.object({
   country: z.string().min(1, "country is required"),
 });
 
-// const zodResolver = (schema) => async (data) => {
-//   try {
-//     const values = schema.parse(data);
-//     return { values, errors: {} };
-//   } catch (error) {
-//     return {
-//       values: {},
-//       errors: e.errors.reduce((allErrors, currentError) => {
-//         allErrors[currentError.path[0]] = {
-//           type: "manual",
-//           message: currentError.message,
-//         };
-//         return allErrors;
-//       }, {}),
-//     };
-//   }
-// };
-
-function UserProfileForm({ onSave, isLoading, getUser }) {
+function UserProfileForm({
+  onSave,
+  isLoading,
+  getUser,
+  title = "User Profile",
+  buttonText = "Submit",
+}) {
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: getUser,
@@ -62,7 +50,7 @@ function UserProfileForm({ onSave, isLoading, getUser }) {
         className="space-y-4 bg-gray-50 rounded-lg md:p-10"
       >
         <div>
-          <h2 className="text-2xl font-bold">User Profile Form</h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
             View and Change your profile information here
           </FormDescription>
@@ -174,7 +162,7 @@ function UserProfileForm({ onSave, isLoading, getUser }) {
           <LoadingButton />
         ) : (
           <Button type="submit" className="bg-orange-500">
-            Submit
+            {buttonText}
           </Button>
         )}
       </form>

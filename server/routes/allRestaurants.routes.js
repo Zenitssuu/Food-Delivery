@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { searchResturant } from "../controllers/allRestaurant.controller.js";
+import { getRestaurant, searchRestaurant } from "../controllers/allRestaurant.controller.js";
 import { param } from "express-validator";
 
 const router = Router();
@@ -11,7 +11,17 @@ router.get(
     .trim()
     .notEmpty()
     .withMessage("City parameter must be a valid string"),
-  searchResturant
+  searchRestaurant
+);
+
+router.get(
+  "/:restaurantId",
+  param("restaurantId")
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("restaurantId parameter must be a valid string"),
+    getRestaurant
 );
 
 export default router;

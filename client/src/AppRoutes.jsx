@@ -14,6 +14,7 @@ import UserProfilePage from "./pages/UserProfilePage.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import ManageResturantPage from "./pages/ManageResturantPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
+import DetailPage from "./pages/DetailPage.jsx";
 
 function AppRouter() {
   return (
@@ -32,6 +33,15 @@ function AppRouter() {
         element={
           <Layout showHero={false}>
             <SearchPage />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/detail/:restaurant"
+        element={
+          <Layout showHero={false}>
+            <DetailPage />
           </Layout>
         }
       />

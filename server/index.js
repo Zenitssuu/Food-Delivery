@@ -3,9 +3,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import { connectDB } from "./db/index.js";
-import { userRoutes, resturantRoutes } from "./routes/routes.js";
-
-import allRestaurantsRoutes from "./routes/allRestaurants.routes.js";
+import {
+  userRoutes,
+  resturantRoutes,
+  orderRoutes,
+  allRestaurantRoutes,
+} from "./routes/routes.js";
 
 dotenv.config();
 
@@ -20,20 +23,23 @@ const app = express();
 const PORT = process.env.PORT;
 
 //middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: true,
     credentials: true,
   })
 );
-console.log(process.env.AUTH0_AUDIENCE);
-console.log(process.env.AUTH0_ISSUER_BASE_URL);
+app.use("/api/v1/order/checkout/webhook", express.raw({ type: "*/*" })); //stripe validation and security
+app.use(express.json());
+
+// console.log(process.env.AUTH0_AUDIENCE);
+// console.log(process.env.AUTH0_ISSUER_BASE_URL);
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/restaurant", resturantRoutes);
-app.use("/api/v1/allrestaurants", allRestaurantsRoutes);
+app.use("/api/v1/allrestaurants", allRestaurantRoutes);
+app.use("/api/v1/order", orderRoutes);
 
 connectDB()
   .then(() => {

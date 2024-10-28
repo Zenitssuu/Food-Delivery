@@ -1,10 +1,9 @@
 import { Restaurant } from "../models/resturant.model.js";
 
-export const searchResturant = async (req, res) => {
+export const searchRestaurant = async (req, res) => {
   try {
     const city = req.params.city;
     // console.log(req.query);
-    
 
     const searchQuery = req.query.searchQuery?.toString() || "";
     const selectedCuisines = req.query.selectedCuisines?.toString() || "";
@@ -15,7 +14,7 @@ export const searchResturant = async (req, res) => {
     query["city"] = new RegExp(city, "i");
     const cityCheck = await Restaurant.countDocuments(query);
 
-    if (cityCheck === 0) {      
+    if (cityCheck === 0) {
       return res
         .status(404)
         .json({ data: [], pagination: { total: 0, page: 1, pages: 1 } });
@@ -28,12 +27,11 @@ export const searchResturant = async (req, res) => {
         .map((cuisine) => new RegExp(cuisine, "i"));
 
       // console.log("cuisines",cuisineArray);
-      
 
       query["cuisines"] = { $all: cuisineArray };
     }
 
-    if (searchQuery) {      
+    if (searchQuery) {
       const searchRegex = new RegExp(searchQuery, "i");
       // console.log("query",searchRegex);
       query["$or"] = [
@@ -41,7 +39,7 @@ export const searchResturant = async (req, res) => {
         {
           cuisines: { $in: [searchRegex] },
         },
-      ];  
+      ];
     }
 
     const pageSize = 10;
@@ -68,5 +66,23 @@ export const searchResturant = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "something went wrong" });
+  }
+};
+
+export const getRestaurant = async (req, res) => {
+  try {
+    const restaurantId = req.params.restaurantId;
+
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
+    }
+
+    return res.status(200).json(restaurant);
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({ messgae: "something went wrong" });
   }
 };
