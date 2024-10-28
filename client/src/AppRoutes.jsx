@@ -15,6 +15,7 @@ import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import ManageResturantPage from "./pages/ManageResturantPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import DetailPage from "./pages/DetailPage.jsx";
+import OrderStatusPage from "./pages/OrderStatusPage.jsx";
 
 function AppRouter() {
   return (
@@ -31,7 +32,7 @@ function AppRouter() {
       <Route
         path="/allrestaurants/search/:city"
         element={
-          <Layout showHero={false}>
+          <Layout>
             <SearchPage />
           </Layout>
         }
@@ -40,7 +41,7 @@ function AppRouter() {
       <Route
         path="/detail/:restaurant"
         element={
-          <Layout showHero={false}>
+          <Layout>
             <DetailPage />
           </Layout>
         }
@@ -61,6 +62,15 @@ function AppRouter() {
           element={
             <Layout>
               <ManageResturantPage />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/order-status"
+          element={
+            <Layout>
+              <OrderStatusPage />
             </Layout>
           }
         />

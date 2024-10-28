@@ -1,5 +1,5 @@
 import { useGetRestaurantById } from "@/api/AllRestaurantApi.jsx";
-import { useCreateCheckoutSession } from "@/api/OrderAPi.jsx";
+import { useCreateCheckoutSession } from "@/api/OrderApi.jsx";
 import CheckoutButton from "@/components/custom/CheckoutButton.jsx";
 import MenuItem from "@/components/custom/MenuItem.jsx";
 import OrderSummary from "@/components/custom/OrderSummary.jsx";
@@ -85,7 +85,7 @@ function DetailPage() {
   };
 
   const onCheckout = async (userFormData) => {
-    console.log("userformdata", userFormData);
+    // console.log("userformdata", userFormData);
 
     if (!restaurant) return;
 
@@ -107,7 +107,7 @@ function DetailPage() {
 
     const data = await createCheckoutSession(checkoutData);
 
-    console.log(data);
+    // console.log(data);
     
 
     window.location.href = data.url;

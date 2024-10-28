@@ -6,6 +6,23 @@ const STRIPE = new Stripe(process.env.STRIPE_API_KEY);
 const FRONTEND_URL = process.env.FRONTEND_URL;
 const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
+export const getOrder = async (req, res) => {
+  try {
+    const order = await Order.find({ user: req.userId })
+      .populate("restaurant")
+      .populate("user");
+
+    if (!order) {
+      throw new Error("order not found");
+    }
+
+    return res.status(200).json(order);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "something went wrong" });
+  }
+};
+
 export const stripeWebhookHandler = async (req, res) => {
   let event;
   try {
@@ -27,7 +44,7 @@ export const stripeWebhookHandler = async (req, res) => {
       return res.status(404).json({ message: "order not found" });
     }
 
-    order.totalAmount = (event.data.object.amount_total/100);
+    order.totalAmount = event.data.object.amount_total / 100;
     order.status = "paid";
 
     await order.save();
@@ -101,7 +118,7 @@ const creasteLineItems = (checkoutSessionReq, menuItems) => {
     const menuItem = menuItems.find(
       (item) => item._id.toString() === cartItem.menuItemId.toString()
     );
-    const unitAmountInPaise = Math.round(menuItem.price * 100);
+    const unitAmountInPaise = Math.round(menuItem?.price * 100);
     if (!menuItem) {
       throw new Error(`menu item is not found: ${cartItem.menuItemId}`);
     }

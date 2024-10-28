@@ -67,7 +67,7 @@ export const useGetRestaurant = () => {
   return { restaurant, isLoading };
 };
 
-export const useUpdateResturant = () =>{
+export const useUpdateResturant = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   const updateRestaurantReq = async (formData) => {
@@ -102,5 +102,75 @@ export const useUpdateResturant = () =>{
   }
 
   return { updateRestaurant, isLoading };
+};
 
-}
+export const useGetRestaurantOrders = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getRestaurantOrdersReq = async () => {
+    const accessToken = await getAccessTokenSilently();
+
+    const resp = await axios.get("/restaurant/get-order", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (resp.status === 404 || resp.status === 500) {
+      throw new Error("failed to get orders");
+    }
+
+    return resp.data;
+  };
+
+  const { data: orders, isLoading } = useQuery(
+    "fetchRestaurantOrders",
+    getRestaurantOrdersReq
+  );
+
+  return { orders, isLoading };
+};
+
+export const useUpdateResturantOrder = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateRestaurantOrderReq = async (newOrderStatusUpdateReq) => {
+    const accessToken = await getAccessTokenSilently();
+    console.log(newOrderStatusUpdateReq.status);
+    
+    const resp = await axios.patch(
+      `/restaurant/update-order/${newOrderStatusUpdateReq.orderId}/status`,
+      {status:newOrderStatusUpdateReq.status},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (resp.status !== 200 && resp.status !== 201) {
+      throw new Error("failed to update order status");
+    }
+  };
+
+  const {
+    mutateAsync: updateOrderStatus,
+    isLoading,
+    isError,
+    isSuccess,
+    reset
+  } = useMutation(updateRestaurantOrderReq);
+
+  if (isError) {
+    toast.error("failed to update order status");
+    reset();
+  }
+
+  if (isSuccess) {
+    toast.success("order status updated");
+  }
+
+  return { updateOrderStatus, isLoading };
+};

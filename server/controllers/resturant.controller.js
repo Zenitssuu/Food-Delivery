@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import { Restaurant } from "../models/resturant.model.js";
+import { Order } from "../models/order.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const createResturant = async (req, res) => {
   try {
     // console.log(req.body);
     // console.log(req.file);
-    
 
     // const { userId } = req.body;
     // console.log(req.userId);
@@ -54,7 +54,6 @@ const getRestaurant = async (req, res) => {
 const updateResturant = async (req, res) => {
   try {
     // console.log(req.file);
-    
 
     const restaurant = await Restaurant.findOne({
       user: req.userId,
@@ -74,7 +73,6 @@ const updateResturant = async (req, res) => {
     restaurant.lastUpdated = new Date();
 
     if (req.file) {
-
       const imageUrl = await uploadImage(req.file);
       restaurant.imageUrl = imageUrl;
     }
@@ -82,6 +80,53 @@ const updateResturant = async (req, res) => {
     await restaurant.save();
 
     return res.status(200).json(restaurant);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "something went wrong" });
+  }
+};
+
+const getRestaurantOrder = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant) {
+      return res.status(404).json({ message: "restaurant not found" });
+    }
+
+    const orders = await Order.find({ restaurant: restaurant._id })
+      .populate("restaurant")
+      .populate("user");
+
+    return res.json(orders);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "something went wrong" });
+  }
+};
+
+const updateRestaurantOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    // console.log(req.body);
+    
+    const { status } = req.body;
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "order not found" });
+    }
+
+    const restaurant = await Restaurant.findById(order.restaurant);
+
+    if (restaurant?.user?._id.toString() !== req.userId) {
+      return res.status(401).send();
+    }
+
+    order.status = status;
+    await order.save();
+
+    return res.status(200).json(order);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "something went wrong" });
@@ -98,4 +143,10 @@ const uploadImage = async (file) => {
   return uploadResp.url;
 };
 
-export { createResturant, getRestaurant, updateResturant };
+export {
+  createResturant,
+  getRestaurant,
+  updateResturant,
+  getRestaurantOrder,
+  updateRestaurantOrderStatus,
+};
