@@ -4,10 +4,7 @@ import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 
-const CreateUserRequest = {
-  auth0Id: String,
-  email: String,
-};
+
 
 export const useCreateUser = () => {
   const { getAccessTokenSilently } = useAuth0();
