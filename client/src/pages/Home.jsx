@@ -1,5 +1,4 @@
 import React from "react";
-import landingImage from "../assets/landing.png";
 import appDownloadImage from "../assets/appDownload.png";
 import SearchBar from "@/components/searchbar/SearchBar.jsx";
 import { useNavigate } from "react-router";
@@ -22,16 +21,11 @@ function Home() {
         <SearchBar placeholder="Search by city or town" onSubmit={handleSearchSubmit}/>
       </div>
       <div className="grid md:grid-cols-2 gap-5 mt-5">
-        <img src={landingImage} />
+        <img src="https://res.cloudinary.com/dgze4nv70/image/upload/v1740395789/giurvme2fvmzmafuujci.png"/>
         <div className="flex flex-col items-center justify-center gap-4 text-center">
           <span className="font-bold text-3xl tracking-tighter">
             Order takeaway even faster!
           </span>
-          <span>
-            Download the MernEats App for faster ordering and personalised
-            recommendations
-          </span>
-          <img src={appDownloadImage} />
         </div>
       </div>
     </div>
