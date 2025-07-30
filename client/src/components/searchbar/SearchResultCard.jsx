@@ -3,40 +3,53 @@ import { Link } from "react-router-dom";
 import { AspectRatio } from "../ui/aspect-ratio.jsx";
 import { Banknote, Clock, Dot } from "lucide-react";
 
-function SearchResultCard({restaurant}) {
+function SearchResultCard({ restaurant }) {
   return (
     <Link
       to={`/detail/${restaurant._id}`}
-      className="grid lg:grid-cols-[2fr_3fr] gap-5 group"
+      className="flex flex-col sm:flex-row gap-5 rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow bg-white"
     >
-      <AspectRatio ratio={16 / 6}>
-        <img
-          src={restaurant.imageUrl}
-          className="rounded-md w-full h-full object-cover"
-        />
-      </AspectRatio>
-      <div>
-        <h3 className="text-2xl font-bold tracking-tight mb-2 group-hover:underline">
-          {restaurant.restaurantName}
-        </h3>
-        <div id="card-content" className="grid md:grid-cols-2 gap-2">
-          <div className="flex flex-row flex-wrap">
+      {/* Image */}
+      <div className="sm:w-1/3 w-full">
+        <AspectRatio ratio={16 / 9}>
+          <img
+            src={restaurant.imageUrl}
+            alt={restaurant.restaurantName}
+            className="rounded-lg w-full h-full object-cover"
+          />
+        </AspectRatio>
+      </div>
+
+      {/* Info */}
+      <div className="flex flex-col justify-between sm:w-2/3 w-full gap-3">
+        {/* Title */}
+        <div>
+          <h3 className="text-xl font-semibold tracking-tight text-gray-900 mb-1 group-hover:text-orange-500 transition-colors">
+            {restaurant.restaurantName}
+          </h3>
+
+          {/* Cuisines */}
+          <div className="text-sm text-gray-600 flex flex-wrap gap-1">
             {restaurant.cuisines.map((item, index) => (
-              <span className="flex" key={item}>
-                <span>{item}</span>
-                {index < restaurant.cuisines.length - 1 && <Dot />}
+              <span key={item} className="flex items-center">
+                {item}
+                {index < restaurant.cuisines.length - 1 && (
+                  <Dot className="h-4 w-4 text-gray-400" />
+                )}
               </span>
             ))}
           </div>
-          <div className="flex gap-2 flex-col">
-            <div className="flex items-center gap-1 text-green-600">
-              <Clock className="text-green-600" />
-              {restaurant.estimatedDeliveryTime} mins
-            </div>
-            <div className="flex items-center gap-1">
-              <Banknote />
-              Delivery from Rs {(restaurant.deliveryPrice).toFixed(2)}
-            </div>
+        </div>
+
+        {/* Footer Info */}
+        <div className="flex flex-col sm:flex-row gap-2 text-sm text-gray-700">
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4 text-green-600" />
+            <span>{restaurant.estimatedDeliveryTime} mins delivery</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Banknote className="w-4 h-4 text-orange-500" />
+            <span>From ₹{restaurant.deliveryPrice.toFixed(2)}</span>
           </div>
         </div>
       </div>

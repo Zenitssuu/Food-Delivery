@@ -7,10 +7,7 @@ export const cuisineList = [
   "Chinese",
   "Desserts",
   "French",
-  "Greek",
-  "Healthy",
   "Indian",
-  "Italian",
   "Japanese",
   "Mexican",
   "Noodles",
@@ -23,6 +20,5 @@ export const cuisineList = [
   "Steak",
   "Sushi",
   "Tacos",
-  "Tapas",
   "Vegan",
 ];

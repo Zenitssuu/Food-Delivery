@@ -2,25 +2,32 @@ import React from "react";
 import { Link } from "react-router-dom";
 import MobileNav from "./MobileNav.jsx";
 import MainNav from "./MainNav.jsx";
+import logo from "../../assets/logo.png";
 
 function Header() {
   return (
-    <div className="border-b-2 border-b-orange-500 py-6">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link
-          to="/"
-          className="text-3xl font-bold tracking-tight text-orange-500"
-        >
-          EasyEats.com
+    <header className="sticky top-0 z-50 backdrop-blur-md border-b-2 border-orange-500 shadow-sm transition-all duration-300">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        {/* Logo only */}
+        <Link to="/" className="flex items-center">
+          <img
+            src={logo}
+            alt="Easy Eats Logo"
+            className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
+          />
         </Link>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex">
+          <MainNav />
+        </div>
+
+        {/* Mobile Nav */}
         <div className="md:hidden">
           <MobileNav />
         </div>
-        <div className="hidden md:block">
-          <MainNav />
-        </div>
       </div>
-    </div>
+    </header>
   );
 }
 

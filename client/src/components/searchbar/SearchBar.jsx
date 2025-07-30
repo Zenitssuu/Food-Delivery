@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 // import { Form } from "react-router-dom";
 import { z } from "zod";
-import { FormControl, FormField, FormItem,Form } from "../ui/form.jsx";
+import { FormControl, FormField, FormItem, Form } from "../ui/form.jsx";
 import { Input } from "../ui/input.jsx";
 import { Button } from "../ui/button.jsx";
 
@@ -15,6 +15,7 @@ const formSchema = z.object({
 });
 
 function SearchBar({ onSubmit, onReset, placeholder, searchQuery }) {
+  // console.log(placeholder)
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -23,8 +24,8 @@ function SearchBar({ onSubmit, onReset, placeholder, searchQuery }) {
   });
 
   useEffect(() => {
-    form.reset({searchQuery})
-  },[form,searchQuery])
+    form.reset({ searchQuery });
+  }, [form, searchQuery]);
 
   const handleReset = () => {
     form.reset({
@@ -40,7 +41,7 @@ function SearchBar({ onSubmit, onReset, placeholder, searchQuery }) {
     <Form {...form}>
       <form
         className={`flex items-center flex-1 gap-3 justify-between flex-row border-2 rounded-full p-3 mx-5 ${
-          form.formState.errors.searchQuery &&"border-red-500"
+          form.formState.errors.searchQuery && "border-red-500"
         }`}
         onSubmit={form.handleSubmit(onSubmit)}
       >
@@ -58,25 +59,23 @@ function SearchBar({ onSubmit, onReset, placeholder, searchQuery }) {
               <FormControl>
                 <Input
                   {...field}
-                //   defaultValues=""
-                  className="border-none shadow-none text-xl focus-visible:ring-0"
+                  value={field.value || ""}
                   placeholder={placeholder}
+                  className="border-none shadow-none text-xl focus-visible:ring-0"
                 />
               </FormControl>
             </FormItem>
           )}
         />
 
-       
-          <Button
-            onClick={handleReset}
-            type="button"
-            variant="outline"
-            className=" rounded-full"
-          >
-            Reset
-          </Button>
-       
+        <Button
+          onClick={handleReset}
+          type="button"
+          variant="outline"
+          className=" rounded-full"
+        >
+          Reset
+        </Button>
 
         <Button type="submit" className="rounded-full bg-orange-500">
           Search

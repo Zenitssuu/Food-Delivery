@@ -2,7 +2,7 @@ import React from "react";
 import { Label } from "../ui/label.jsx";
 import { Button } from "../ui/button.jsx";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
-import { cuisineList } from "@/config/resturant-options-config.js";
+import { cuisineList } from "../../config/resturant-options-config.js";
 
 function CuisineFilter({
   onChange,
