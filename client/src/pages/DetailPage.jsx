@@ -114,6 +114,7 @@ function DetailPage() {
       <div className="relative w-full h-[280px] rounded-md overflow-hidden mb-10">
         <img
           src={restaurant.imageUrl}
+          loading="lazy"
           alt="restaurant"
           className="w-full h-full object-cover"
         />
@@ -137,6 +138,7 @@ function DetailPage() {
                 >
                   <div className="h-32 w-full overflow-hidden rounded-t-xl">
                     <img
+                      loading="lazy"
                       src={item.imageUrl || "/placeholder-food.png"}
                       alt={item.name}
                       className="w-full h-full object-cover"

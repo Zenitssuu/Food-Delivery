@@ -22,7 +22,7 @@ export const useCreateCheckoutSession = () => {
     if (resp.status === 404 || resp.status === 500) {
       throw new Error("Unable to create checkout session ");
     }
-    console.log(resp.data);
+    // console.log(resp.data);
 
     return resp.data;
   };

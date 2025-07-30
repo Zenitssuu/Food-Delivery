@@ -12,6 +12,7 @@ function Header() {
         <Link to="/" className="flex items-center">
           <img
             src={logo}
+            loading="lazy"
             alt="Easy Eats Logo"
             className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
           />

@@ -28,6 +28,7 @@ function ImageSection() {
           <AspectRatio ratio={16 / 9}>
             <img
               src={existsingImageUrl}
+              loading="lazy"
               alt="restaurant banner"
               className=" rounded-md object-cover h-full w-full"
             />

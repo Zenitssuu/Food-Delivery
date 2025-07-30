@@ -77,32 +77,52 @@ function SearchPage() {
     );
   }
 
-  if (!results?.data?.length) {
-    const hasRestaurantsInCity = results?.allAvailableCuisines?.length > 0;
-    
-    if (!hasRestaurantsInCity) {
-      // 🏙️ No restaurants at all in this city
-      return (
-        <div className="max-w-2xl mx-auto px-4 py-20 text-center flex flex-col items-center gap-4">
-          <img
-            src={logo}
-            alt="No restaurants found"
-            className="w-60 h-60 object-contain"
-          />
-          <h2 className="text-2xl font-semibold text-orange-500">
-            We’re not in {city} yet!
-          </h2>
-          <p className="text-gray-600">
-            Our foodies are coming soon 🍽️ — hang tight, we'll be there!
-          </p>
-        </div>
-      );
-    }
+  if (!results?.data?.cityCheck) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-20 text-center flex flex-col items-center gap-4">
+        <img
+          src={logo}
+          loading="lazy"
+          alt="No restaurants found"
+          className="w-60 h-60 object-contain"
+        />
+        <h2 className="text-2xl font-semibold text-orange-500">
+          We’re not in {city} yet!
+        </h2>
+        <p className="text-gray-600">
+          Our foodies are coming soon 🍽️ — hang tight, we'll be there!
+        </p>
+      </div>
+    );
+  }
 
+  if (!results?.data?.restaurants.length) {
+    // const hasRestaurantsInCity = results?.allAvailableCuisines?.length > 0;
+
+    // if (!hasRestaurantsInCity) {
+    //   // 🏙️ No restaurants at all in this city
+    //   return (
+    //     <div className="max-w-2xl mx-auto px-4 py-20 text-center flex flex-col items-center gap-4">
+    //       <img
+    //         src={logo}
+    //         loading="lazy"
+    //         alt="No restaurants found"
+    //         className="w-60 h-60 object-contain"
+    //       />
+    //       <h2 className="text-2xl font-semibold text-orange-500">
+    //         We’re not in {city} yet!
+    //       </h2>
+    //       <p className="text-gray-600">
+    //         Our foodies are coming soon 🍽️ — hang tight, we'll be there!
+    //       </p>
+    //     </div>
+    //   );
+    // }
     // 🍽️ There are restaurants in the city, just not matching the current filters
     return (
       <div className="max-w-2xl mx-auto px-4 py-20 text-center flex flex-col items-center gap-4">
         <img
+          loading="lazy"
           src={logo}
           alt="No matches found"
           className="w-60 h-60 object-contain"
@@ -190,7 +210,7 @@ function SearchPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {results.data.map((restaurant) => (
+          {results.data.restaurants.map((restaurant) => (
             <SearchResultCard key={restaurant._id} restaurant={restaurant} />
           ))}
         </div>

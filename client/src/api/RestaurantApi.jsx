@@ -137,7 +137,7 @@ export const useUpdateResturantOrder = () => {
 
   const updateRestaurantOrderReq = async (newOrderStatusUpdateReq) => {
     const accessToken = await getAccessTokenSilently();
-    console.log(newOrderStatusUpdateReq.status);
+    // console.log(newOrderStatusUpdateReq.status);
     
     const resp = await axios.patch(
       `/restaurant/update-order/${newOrderStatusUpdateReq.orderId}/status`,

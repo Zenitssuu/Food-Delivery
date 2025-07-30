@@ -36,6 +36,7 @@ function Home() {
         <div className="w-full overflow-hidden rounded-xl shadow-md">
           {!heroLoaded && <Skeleton height={400} />}
           <img
+            loading="lazt"
             src="https://res.cloudinary.com/dgze4nv70/image/upload/v1740395789/giurvme2fvmzmafuujci.png"
             alt="Order faster"
             className={`w-full object-cover rounded-xl transition-opacity duration-500 ${

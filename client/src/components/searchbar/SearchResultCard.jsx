@@ -13,6 +13,7 @@ function SearchResultCard({ restaurant }) {
       <div className="sm:w-1/3 w-full">
         <AspectRatio ratio={16 / 9}>
           <img
+            loading="lazy"
             src={restaurant.imageUrl}
             alt={restaurant.restaurantName}
             className="rounded-lg w-full h-full object-cover"

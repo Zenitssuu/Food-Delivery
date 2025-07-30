@@ -48,8 +48,8 @@ function OrderStatusPage() {
     (o) => o.status?.toLowerCase() === "delivered"
   );
 
-  console.log("ongoing", ongoingOrders);
-  console.log("past", pastOrders);
+  // console.log("ongoing", ongoingOrders);
+  // console.log("past", pastOrders);
 
   const renderCard = (currOrder) => {
     if (!currOrder) return null;
@@ -65,6 +65,7 @@ function OrderStatusPage() {
             <AspectRatio ratio={1}>
               <img
                 src={currOrder?.restaurant.imageUrl}
+                loading="lazy"
                 alt="restaurant"
                 className="w-full h-full object-cover"
               />

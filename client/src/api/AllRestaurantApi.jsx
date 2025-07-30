@@ -28,7 +28,7 @@ export const useSearchRestaurant = (searchState, city) => {
     createSearchRequest,
     { enabled: !!city }
   );
-  console.log(results);
+  // console.log(results);
   return { results, isLoading };
 };
 
