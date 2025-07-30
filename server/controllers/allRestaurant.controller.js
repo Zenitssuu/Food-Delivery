@@ -20,13 +20,15 @@ export const searchRestaurant = async (req, res) => {
         .json({ data: [], pagination: { total: 0, page: 1, pages: 1 } });
     }
 
+    const cityRestCount = cityCheck > 0;
+
     if (selectedCuisines) {
       //URL = selected cuisines, such as indian, chinese etc
       const cuisineArray = selectedCuisines
         .split(",")
         .map((cuisine) => new RegExp(cuisine, "i"));
 
-      console.log("cuisines",cuisineArray);
+      // console.log("cuisines", cuisineArray);
 
       query["cuisines"] = { $in: cuisineArray };
     }
@@ -54,7 +56,7 @@ export const searchRestaurant = async (req, res) => {
     const total = await Restaurant.countDocuments(query);
 
     const response = {
-      data: restaurants,
+      data: { restaurants: restaurants, cityCheck: cityCheck },
       pagination: {
         total,
         page,

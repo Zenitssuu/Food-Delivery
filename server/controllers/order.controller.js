@@ -97,7 +97,7 @@ export const createCheckoutSession = async (req, res) => {
       return res.status(500).json({ message: "error creating stripe session" });
     }
 
-    console.log(session.url);
+    // console.log(session.url);
     await newOrder.save();
 
     res.status(200).json({ url: session.url });
