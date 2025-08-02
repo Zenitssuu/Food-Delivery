@@ -45,8 +45,18 @@ function CheckoutButton({ onCheckout, disabled, isLoading }) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button disabled={disabled} className="bg-orange-500 flex-1">
-          Go to checkout
+        <Button
+          disabled={disabled || isLoading}
+          className="bg-orange-500 flex-1"
+        >
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Processing...
+            </div>
+          ) : (
+            "Go to checkout"
+          )}
         </Button>
       </DialogTrigger>
 

@@ -10,6 +10,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter } from "@/components/ui/card";
+import { getDistanceBetweenLocations } from "@/lib/getDistBetweenLocations";
+import { toast } from "sonner";
 
 function DetailPage() {
   const restaurantId = useParams();
@@ -72,6 +74,28 @@ function DetailPage() {
   const onCheckout = async (userFormData) => {
     if (!restaurant) return;
 
+    const userLocation = `${userFormData.city}, ${userFormData.city}`;
+    const restaurantLocation = `${restaurant.city}, ${restaurant.city}`;
+
+    try {
+      const distance = await getDistanceBetweenLocations(
+        restaurantLocation,
+        userLocation
+      );
+
+      if (distance > 10) {
+        toast.error(
+          `🚫 Cannot deliver to your address. (${distance.toFixed(1)} km away)`
+        );
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      console.error("Error checking distance");
+      toast.error("❌ Failed to verify delivery distance. Try again.");
+      return;
+    }
+
     const checkoutData = {
       cartItems: cartItems.map((item) => ({
         menuItemId: item._id,
@@ -88,6 +112,7 @@ function DetailPage() {
       },
     };
 
+    toast.success("✅ Checkout started, redirecting...");
     const data = await createCheckoutSession(checkoutData);
     window.location.href = data.url;
   };
