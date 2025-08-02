@@ -8,6 +8,7 @@ import {
   resturantRoutes,
   orderRoutes,
   allRestaurantRoutes,
+  checkDistanceRoute
 } from "./routes/routes.js";
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.use(express.json());
 // console.log(process.env.AUTH0_AUDIENCE);
 // console.log(process.env.AUTH0_ISSUER_BASE_URL);
 
+app.use("/api/v1/distance", checkDistanceRoute);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/restaurant", resturantRoutes);
 app.use("/api/v1/allrestaurants", allRestaurantRoutes);
