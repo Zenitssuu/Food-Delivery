@@ -64,7 +64,7 @@ function OrderItemCard({ order }) {
           <div>
             Time:
             <span className="ml-2 font-normal">
-              Rs {order.totalAmount.toFixed(2)}
+              Rs {order?.totalAmount?.toFixed(2)}
             </span>
           </div>
         </CardTitle>
@@ -73,7 +73,7 @@ function OrderItemCard({ order }) {
       <CardContent className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           {order?.cartItems.map((item) => (
-            <span>
+            <span key={item._id}>
               <Badge variant="outline" className="mr-2">
                 {item.quantity}
               </Badge>
@@ -95,8 +95,11 @@ function OrderItemCard({ order }) {
             </SelectTrigger>
 
             <SelectContent position="popper">
-              {ORDER_STATUS.map((currStatus) => (
-                <SelectItem value={currStatus.value}>
+              {ORDER_STATUS.map((currStatus, index) => (
+                <SelectItem
+                  key={`currStatus+${currStatus.value}+${index}`}
+                  value={currStatus.value}
+                >
                   {currStatus.label}
                 </SelectItem>
               ))}
