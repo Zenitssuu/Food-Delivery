@@ -8,8 +8,9 @@ import {
   resturantRoutes,
   orderRoutes,
   allRestaurantRoutes,
-  checkDistanceRoute
+  checkDistanceRoute,
 } from "./routes/routes.js";
+import redisClient from "./utility/redisClient.js";
 
 dotenv.config();
 
@@ -44,7 +45,9 @@ app.use("/api/v1/allrestaurants", allRestaurantRoutes);
 app.use("/api/v1/order", orderRoutes);
 
 connectDB()
-  .then(() => {
+  .then(async () => {
+    await redisClient.connect();
+
     app.listen(PORT, () => {
       console.log("running on port ", PORT);
     });

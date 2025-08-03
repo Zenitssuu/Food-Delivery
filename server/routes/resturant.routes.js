@@ -22,7 +22,12 @@ router.post(
 );
 
 router.get("/get-order", jwtCheck, jwtParse, getRestaurantOrder);
-router.patch('/update-order/:orderId/status',jwtCheck,jwtParse,updateRestaurantOrderStatus)
+router.patch(
+  "/update-order/:orderId/status",
+  jwtCheck,
+  jwtParse,
+  updateRestaurantOrderStatus
+);
 
 router.get("/get-restaurant", jwtCheck, jwtParse, getRestaurant);
 

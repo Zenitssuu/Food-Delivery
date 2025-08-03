@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Restaurant } from "../models/resturant.model.js";
 import { Order } from "../models/order.model.js";
 import { v2 as cloudinary } from "cloudinary";
+import redisClient from "../utility/redisClient.js";
 
 const createResturant = async (req, res) => {
   try {
@@ -28,6 +29,23 @@ const createResturant = async (req, res) => {
 
     restaurant.lastUpdated = new Date();
     await restaurant.save();
+
+    const city = restaurant.city?.toLowerCase();
+
+    if (city) {
+      const cacheKeyPattern = `search_${city}_*`;
+      const keys = await redisClient.keys(cacheKeyPattern);
+
+      if (keys.length > 0) {
+        try {
+          await Promise.all(keys.map((key) => redisClient.del(key)));
+          console.log("deleted all previous cache");
+        } catch (error) {
+          console.log("error in deleting cache");
+          // throw new Error(error);
+        }
+      }
+    }
 
     return res.status(201).send(restaurant);
   } catch (error) {
@@ -79,6 +97,23 @@ const updateResturant = async (req, res) => {
 
     await restaurant.save();
 
+    const city = restaurant.city?.toLowerCase();
+
+    if (city) {
+      const cacheKeyPattern = `search_${city}_*`;
+      const keys = await redisClient.keys(cacheKeyPattern);
+
+      if (keys.length > 0) {
+        try {
+          await Promise.all(keys.map((key) => redisClient.del(key)));
+          console.log("deleted all previous cache");
+        } catch (error) {
+          console.log("error in deleting cache");
+          // throw new Error(error);
+        }
+      }
+    }
+
     return res.status(200).json(restaurant);
   } catch (error) {
     console.log(error);
@@ -93,9 +128,28 @@ const getRestaurantOrder = async (req, res) => {
       return res.status(404).json({ message: "restaurant not found" });
     }
 
+    const cacheKey = `orders:${restaurant._id}`;
+
+    let cacheOrders;
+    try {
+      cacheOrders = await redisClient.get(cacheKey);
+      if (cacheOrders) {
+        console.log("Returning orders from cache");
+        return res.status(200).json(JSON.parse(cacheOrders));
+      }
+    } catch (error) {
+      console.log("error in getting orders data from cache");
+      // throw new Error(error);
+    }
+
     const orders = await Order.find({ restaurant: restaurant._id })
       .populate("restaurant")
       .populate("user");
+
+    //caching only if there are orders, not caching if orders are not present
+    if (orders.length > 0) {
+      await redisClient.setEx(cacheKey, 600, JSON.stringify(orders));
+    }
 
     return res.status(200).json(orders);
   } catch (error) {
@@ -108,7 +162,7 @@ const updateRestaurantOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
     // console.log(req.body);
-    
+
     const { status } = req.body;
 
     const order = await Order.findById(orderId);

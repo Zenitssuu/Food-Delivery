@@ -1,4 +1,5 @@
 import { Restaurant } from "../models/resturant.model.js";
+import redisClient from "../utility/redisClient.js";
 
 export const searchRestaurant = async (req, res) => {
   try {
@@ -13,6 +14,22 @@ export const searchRestaurant = async (req, res) => {
     let query = {};
     query["city"] = new RegExp(city, "i");
     const cityCheck = await Restaurant.countDocuments(query);
+
+    const cacheKey = `search_${city}_${searchQuery}_${selectedCuisines}_${sortOption}_p${page}`;
+
+    let cacheData;
+
+    try {
+      cacheData = await redisClient.get(cacheKey);
+
+      if (cacheData) {
+        console.log("Using data from cache");
+        return res.status(200).json(JSON.parse(cacheData));
+      }
+    } catch (error) {
+      console.log("error while checking restaurants in cache");
+      // throw new Error(error);
+    }
 
     if (cityCheck === 0) {
       return res
@@ -63,6 +80,14 @@ export const searchRestaurant = async (req, res) => {
         pages: Math.ceil(total / pageSize),
       },
     };
+
+    //caching data to redis
+    try {
+      await redisClient.setEx(cacheKey, 600, JSON.stringify(response));
+    } catch (error) {
+      console.log("error while caching data");
+      // throw new Error(error);
+    }
 
     return res.status(200).json(response);
   } catch (error) {

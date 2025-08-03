@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { Restaurant } from "../models/resturant.model.js";
 import { Order } from "../models/order.model.js";
+import redisClient from "../utility/redisClient.js";
 
 const STRIPE = new Stripe(process.env.STRIPE_API_KEY);
 const FRONTEND_URL = process.env.FRONTEND_URL;
@@ -8,6 +9,18 @@ const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
 export const getOrder = async (req, res) => {
   try {
+    const cacheKey = `userOrder:${req.userId}`;
+
+    try {
+      const userOrders = await redisClient.get(cacheKey);
+      if (userOrders) {
+        console.log("using cache data");
+        return res.status(200).json(JSON.parse(userOrders));
+      }
+    } catch (error) {
+      console.log("Error while fetching order data from cache:", error.message);
+    }
+
     const order = await Order.find({ user: req.userId })
       .populate("restaurant")
       .populate("user");
@@ -15,6 +28,8 @@ export const getOrder = async (req, res) => {
     if (!order) {
       throw new Error("order not found");
     }
+
+    await redisClient.setEx(cacheKey, 600, JSON.stringify(order));
 
     return res.status(200).json(order);
   } catch (error) {
@@ -98,7 +113,17 @@ export const createCheckoutSession = async (req, res) => {
     }
 
     // console.log(session.url);
+
     await newOrder.save();
+
+    let cacheKey = `orders:${String(restaurant._id)}`;
+    try {
+      await redisClient.del(cacheKey);
+      console.log("deleted previous orders cache");
+    } catch (error) {
+      console.log("error while deleting orders cache");
+      // throw new Error(error);
+    }
 
     res.status(200).json({ url: session.url });
   } catch (error) {
