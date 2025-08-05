@@ -1,7 +1,7 @@
 // routes/distance.js
 import express from "express";
 import axios from "axios";
-import redisClient from "../utility/redisClient.js";
+import redisClient from "../services/redisClient.js";
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
   if (!origin || !destination) {
     return res.status(400).json({ error: "Origin and destination required" });
   }
-  console.log(origin, destination);
+  // console.log(origin, destination);
   try {
     const cacheKey = `${origin}to${destination}`;
     let distance;

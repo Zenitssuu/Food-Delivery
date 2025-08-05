@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 import { Restaurant } from "../models/resturant.model.js";
 import { Order } from "../models/order.model.js";
 import { v2 as cloudinary } from "cloudinary";
-import redisClient from "../utility/redisClient.js";
+import redisClient from "../services/redisClient.js";
+
 
 const createResturant = async (req, res) => {
   try {

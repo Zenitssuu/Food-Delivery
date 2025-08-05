@@ -1,5 +1,5 @@
 import { Restaurant } from "../models/resturant.model.js";
-import redisClient from "../utility/redisClient.js";
+import redisClient from "../services/redisClient.js";
 
 export const searchRestaurant = async (req, res) => {
   try {

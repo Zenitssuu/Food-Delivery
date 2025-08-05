@@ -4,16 +4,18 @@
   "description": "",
   "type": "module",
   "main": "index.js",
-  "scripts": {
+ "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"nodemon\" \"npm run stripe\" index.js",
-    "stripe": "stripe listen --forward-to localhost:3000/api/v1/order/checkout/webhook"
+    "start": "concurrently \"nodemon index.js\" \"npm run stripe\"",
+    "stripe": "stripe listen --forward-to localhost:3000/api/v1/order/checkout/webhook",
+    "worker": "nodemon worker.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.11.0",
+    "bullmq": "^5.56.9",
     "cloudinary": "^2.5.1",
     "concurrently": "^9.0.1",
     "cors": "^2.8.5",
@@ -24,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^7.0.5",
     "nodemon": "^3.1.7",
     "redis": "^5.7.0",
     "stripe": "^17.6.0"

@@ -1,0 +1,1 @@
+import { emailWorker } from "./services/email/emailWorker.js";

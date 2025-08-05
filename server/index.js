@@ -1,6 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import { connectDB } from "./db/index.js";
 import {
@@ -10,9 +11,7 @@ import {
   allRestaurantRoutes,
   checkDistanceRoute,
 } from "./routes/routes.js";
-import redisClient from "./utility/redisClient.js";
-
-dotenv.config();
+import redisClient from "./services/redisClient.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -32,7 +31,10 @@ app.use(
     credentials: true,
   })
 );
-app.use("/api/v1/order/checkout/webhook", express.raw({ type: "*/*" })); //stripe validation and security
+app.use(
+  "/api/v1/order/checkout/webhook",
+  express.raw({ type: "application/json" })
+);
 app.use(express.json());
 
 // console.log(process.env.AUTH0_AUDIENCE);
