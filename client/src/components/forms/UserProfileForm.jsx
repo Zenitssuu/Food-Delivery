@@ -90,7 +90,6 @@ function UserProfileForm({
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                   className="bg-white"
-                  placeholder="Enter your name"
                 />
               </FormControl>
               <FormMessage />
@@ -105,42 +104,19 @@ function UserProfileForm({
             name="address"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Address Line</FormLabel>
+                <FormLabel>Address</FormLabel>
                 <FormControl>
                   <Input
                     value={field.value}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
                     className="bg-white"
-                    placeholder="Enter you address for delivery"
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-          {/* city */}
-          <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>City</FormLabel>
-                <FormControl>
-                  <Input
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    className="bg-white"
-                    placeholder="Enter your city"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           {/* country */}
           <FormField
             control={form.control}
@@ -154,7 +130,25 @@ function UserProfileForm({
                     onChange={field.onChange}
                     onBlur={field.onBlur}
                     className="bg-white"
-                    placeholder="Enter you country"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* city */}
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>City</FormLabel>
+                <FormControl>
+                  <Input
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    className="bg-white"
                   />
                 </FormControl>
                 <FormMessage />

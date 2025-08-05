@@ -111,7 +111,7 @@ function DetailPage() {
         email: userFormData.email.toString(),
       },
     };
-    // console.log("checkout data",checkoutData)
+
     toast.success("✅ Checkout started, redirecting...");
     const data = await createCheckoutSession(checkoutData);
     window.location.href = data.url;
