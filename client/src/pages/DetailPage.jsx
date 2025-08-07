@@ -164,7 +164,10 @@ function DetailPage() {
                   <div className="h-32 w-full overflow-hidden rounded-t-xl">
                     <img
                       loading="lazy"
-                      src={item.imageUrl || "/placeholder-food.png"}
+                      src={
+                        item.imageUrl ||
+                        `https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400/f97316/ffffff?text=${item.name}`
+                      }
                       alt={item.name}
                       className="w-full h-full object-cover"
                     />
